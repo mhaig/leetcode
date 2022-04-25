@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef struct HashList
+{
+    struct HashListNode *head;
+    struct HashListNode *tail;
+    int count;
+} HashList;
+
 typedef struct HashListNode
 {
     int val;
@@ -46,6 +53,29 @@ hashRemove(HashListNode **hashMap, int pos, int val)
     {
         list = linklistRemove(list, pos, val);
         hashMap[hash] = list;
+    }
+}
+
+void
+HashList_insert(HashList *list, int pos, int val)
+{
+    HashListNode *node = malloc(sizeof(*node));
+    memset(node, 0, sizeof(*node));
+    node->pos = pos;
+    node->val = val;
+    node->next = NULL;
+
+    if (list->tail)
+    {
+        list->tail->next = node;
+        list->tail = node;
+        list->count++;
+    }
+    else
+    {
+        list->head = node;
+        list->tail = node;
+        list->count = 1;
     }
 }
 
